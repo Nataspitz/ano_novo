@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alerta e Feliz Ano Novo</title>
+    <title>Descubra Sua Surpresa de Ano Novo!</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #2e2e2e;
+            background-color: #1b1b1b;
             color: #ffffff;
             margin: 0;
             padding: 0;
@@ -15,9 +15,13 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-image: url('https://source.unsplash.com/random/1920x1080?fireworks');
+            background-size: cover;
+            background-position: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
-        #alert-page, #final-page {
+        #alert-page, #final-page-yes, #final-page-no, #error-page {
             display: none;
             justify-content: center;
             align-items: center;
@@ -30,89 +34,70 @@
         }
 
         .alert-box {
-            background-color: #3a3a3a;
-            color: #ff6666;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #ffcc00;
             border-radius: 10px;
             padding: 20px;
             text-align: center;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
             margin: 20px;
+        }
+
+        .highlight {
+            color: #FFD700; /* Dourado */
         }
 
         .alert-box h1 {
-            color: #ff4c4c;
-            margin: 20px;
+            margin: 20px 0;
+        }
+
+        .alert-box p {
+            font-size: 18px;
         }
 
         .alert-box button {
-            margin-top: 10px;
-            background-color: #244ac9;
-            color: #ffffff;
+            margin: 10px;
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
             cursor: pointer;
+            font-size: 16px;
         }
 
-        .alert-box button:hover {
-            background-color: #19109b;
+        .btn-yes {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .btn-yes:hover {
+            background-color: #0056b3;
             scale: 1.1;
         }
 
-        .timer-container {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            margin: 20px auto;
+        .btn-no {
+            background-color: #dc3545;
+            color: #ffffff;
         }
 
-        .timer {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffcc00;
-            z-index: 2;
+        .btn-no:hover {
+            background-color: #c82333;
+            scale: 1.1;
         }
 
-        .progress-circle {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 5px solid #444444;
-            border-top: 5px solid #00ffff;
-            animation: countdown 15s linear forwards;
-            z-index: 1;
-        }
-
-        @keyframes countdown {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(-360deg);
-            }
-        }
-
-        #final-page .alert-box {
+        #final-page-yes .alert-box, #final-page-no .alert-box {
             background-color: #1e1e1e;
             border: 2px solid #00ffff;
             border-radius: 15px;
             margin: 20px;
         }
 
-        #final-page h1 {
+        #final-page-yes h1, #final-page-no h1 {
             color: #00ffff;
         }
 
-        #final-page .text {
+        #final-page-yes .text, #final-page-no .text {
             color: #ffffff;
         }
 
@@ -131,23 +116,51 @@
             padding: 5px 10px;
             border-radius: 5px;
         }
+
+        #error-page .alert-box {
+            background-color: #1e1e1e;
+            border: 2px solid #ff0000; /* Vermelho */
+            border-radius: 15px;
+            margin: 20px;
+        }
+
+        #error-page h1 {
+            color: #ff0000; /* Vermelho */
+        }
+
+        #error-page .text {
+            color: #ffffff;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #333;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress {
+            height: 20px;
+            width: 0;
+            background-color: #ff0000;
+            transition: width 1s linear;
+        }
     </style>
 </head>
 <body>
+    <!-- Página Inicial -->
     <div id="alert-page">
         <div class="alert-box">
-            <h1>⚠️ Erro no Sistema ⚠️</h1>
-            <p style="color: white;">Detectamos uma possível falha. Clique no botão abaixo antes que o tempo acabe.</p>
-            <p>Seu sistema pode estar em risco!</p>
-            <div class="timer-container">
-                <div class="timer" id="alert-timer">15</div>
-                <div class="progress-circle"></div>
-            </div>
-            <button onclick="redirectToFinalPage()">Fechar Alerta</button>
+            <h1>🎁 Uma surpresa de Ano Novo aguarda por você!</h1>
+            <p>Você deseja receber esta surpresa, <span class="highlight">[Seu Nome]</span>? 🎇</p>
+            <button class="btn-yes" onclick="redirectToFinalPage('yes')">Sim, quero a surpresa!</button>
+            <button class="btn-no" onclick="redirectToErrorPage()">Não, obrigado.</button>
         </div>
     </div>
 
-    <div id="final-page" style="display: none;">
+    <!-- Página de Feliz Ano Novo (Sim) -->
+    <div id="final-page-yes">
         <div class="alert-box">
             <h1>🎉 Feliz 2025! 🎉</h1>
             <p class="text">
@@ -159,37 +172,71 @@
             <p class="text">
                 Abraço e tudo de bom! 🥳
             </p>
-            <div id="final-timer">
-                <span id="days">0D</span>
-                <span id="hours">0HR</span>
-                <span id="minutes">0M</span>
-                <span id="seconds">0S</span>
+        </div>
+    </div>
+
+    <!-- Página de Feliz Ano Novo (Não) -->
+    <div id="final-page-no">
+        <div class="alert-box">
+            <h1>😜 Te dei um susto, né? 😜</h1>
+            <p class="text">
+                Não se preocupe, era só uma brincadeira! Desejo a você um Feliz Ano Novo, com muita saúde, sucesso e alegria para você e sua família.
+            </p>
+            <p class="text">
+                Que todos os seus sonhos se realizem, e se precisar de ajuda no mundo digital, estou sempre por aqui!
+            </p>
+            <p class="text">
+                Abraço e tudo de bom! 🥳
+            </p>
+        </div>
+    </div>
+
+    <!-- Página de Erro -->
+    <div id="error-page">
+        <div class="alert-box">
+            <h1>⚠️ Sistema em Erro ⚠️</h1>
+            <p class="text">Apagando todos os dados do seu dispositivo em <span id="seconds-left">5</span> segundos...</p>
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Timer para a página de alerta
-        let alertTime = 15;
-        const alertTimer = document.getElementById("alert-timer");
-        const alertInterval = setInterval(() => {
-            alertTime--;
-            alertTimer.textContent = alertTime;
-            if (alertTime <= 0) {
-                clearInterval(alertInterval);
-                redirectToFinalPage();
-            }
-        }, 1000);
-
-        function redirectToFinalPage() {
+        function redirectToFinalPage(choice) {
             document.getElementById("alert-page").style.display = "none";
-            document.getElementById("final-page").style.display = "flex";
+            document.getElementById("error-page").style.display = "none";
+            if (choice === 'yes') {
+                document.getElementById("final-page-yes").style.display = "flex";
+            } else {
+                document.getElementById("final-page-no").style.display = "flex";
+            }
             startFinalCountdown();
         }
 
-        // Timer para o Feliz 2025
+        function redirectToErrorPage() {
+            document.getElementById("alert-page").style.display = "none";
+            document.getElementById("error-page").style.display = "flex";
+            let progress = document.getElementById("progress");
+            let width = 0;
+            let secondsLeft = 5;
+            let countdown = document.getElementById("seconds-left");
+
+            let interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    redirectToFinalPage('no');
+                } else {
+                    width += 20;
+                    progress.style.width = width + '%';
+                    secondsLeft -= 1;
+                    countdown.textContent = secondsLeft;
+                }
+            }, 1000); // 5 segundos total, 1 segundo por incremento
+        }
+
         const now = new Date();
-        const newYear = new Date(now.getFullYear() + 1, 0, 1); // Próximo 1º de janeiro
+        const newYear = new Date(now.getFullYear() + 1, 0, 1);
 
         function startFinalCountdown() {
             setInterval(() => {
