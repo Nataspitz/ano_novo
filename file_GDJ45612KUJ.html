@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta e Feliz Ano Novo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2e2e2e;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #alert-page, #final-page {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        #alert-page {
+            display: flex;
+        }
+
+        .alert-box {
+            background-color: #3a3a3a;
+            color: #ff6666;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+        }
+
+        .alert-box h1 {
+            color: #ff4c4c;
+            margin: 20px;
+        }
+
+        .alert-box button {
+            margin-top: 10px;
+            background-color: #244ac9;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .alert-box button:hover {
+            background-color: #19109b;
+            scale: 1.1;
+        }
+
+        .timer-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 20px auto;
+        }
+
+        .timer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffcc00;
+            z-index: 2;
+        }
+
+        .progress-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #444444;
+            border-top: 5px solid #00ffff;
+            animation: countdown 15s linear forwards;
+            z-index: 1;
+        }
+
+        @keyframes countdown {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+
+        #final-page .alert-box {
+            background-color: #1e1e1e;
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            margin: 20px;
+        }
+
+        #final-page h1 {
+            color: #00ffff;
+        }
+
+        #final-page .text {
+            color: #ffffff;
+        }
+
+        #final-timer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #final-timer span {
+            background-color: #333333;
+            color: #00ffff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="alert-page">
+        <div class="alert-box">
+            <h1>⚠️ Erro no Sistema ⚠️</h1>
+            <p style="color: white;">Detectamos uma possível falha. Clique no botão abaixo antes que o tempo acabe.</p>
+            <p>Seu sistema pode estar em risco!</p>
+            <div class="timer-container">
+                <div class="timer" id="alert-timer">15</div>
+                <div class="progress-circle"></div>
+            </div>
+            <button onclick="redirectToFinalPage()">Fechar Alerta</button>
+        </div>
+    </div>
+
+    <div id="final-page" style="display: none;">
+        <div class="alert-box">
+            <h1>🎉 Feliz 2025! 🎉</h1>
+            <p class="text">
+                Que Deus abençoe sua vida neste novo ano! Desejo tudo de bom, muita saúde, sucesso e felicidade para você e sua família.
+            </p>
+            <p class="text">
+                Que você possa realizar todos os seus sonhos e, caso precise de alguém que entenda de programação e do mundo digital, saiba que estou aqui sempre para te ajudar.
+            </p>
+            <p class="text">
+                Abraço e tudo de bom! 🥳
+            </p>
+            <div id="final-timer">
+                <span id="days">0D</span>
+                <span id="hours">0HR</span>
+                <span id="minutes">0M</span>
+                <span id="seconds">0S</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Timer para a página de alerta
+        let alertTime = 15;
+        const alertTimer = document.getElementById("alert-timer");
+        const alertInterval = setInterval(() => {
+            alertTime--;
+            alertTimer.textContent = alertTime;
+            if (alertTime <= 0) {
+                clearInterval(alertInterval);
+                redirectToFinalPage();
+            }
+        }, 1000);
+
+        function redirectToFinalPage() {
+            document.getElementById("alert-page").style.display = "none";
+            document.getElementById("final-page").style.display = "flex";
+            startFinalCountdown();
+        }
+
+        // Timer para o Feliz 2025
+        const now = new Date();
+        const newYear = new Date(now.getFullYear() + 1, 0, 1); // Próximo 1º de janeiro
+
+        function startFinalCountdown() {
+            setInterval(() => {
+                const currentTime = new Date();
+                const timeLeft = newYear - currentTime;
+
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+                const seconds = Math.floor((timeLeft / 1000) % 60);
+
+                document.getElementById("days").textContent = `${days}D`;
+                document.getElementById("hours").textContent = `${hours}HR`;
+                document.getElementById("minutes").textContent = `${minutes}M`;
+                document.getElementById("seconds").textContent = `${seconds}S`;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
